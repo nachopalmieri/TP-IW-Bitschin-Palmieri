@@ -1,9 +1,9 @@
-{% extends 'base.html' %} {% load static %} {% block content %}
-<html>
+{% extends 'base.html' %} 
+{% load static %} 
+{%block title%} Salir {%endblock%}
+{% block content %}
+
   {%include "nav.html"%}
-  <head>
-    <link rel="stylesheet" href="{% static 'css/base.css' %}" />
-  </head>
   <body>
     <div class="mt-1">
       <h4>Usted ha cerrado sesión de su cuenta.</h4>
@@ -16,6 +16,5 @@
       </div>
     </div>
   </body>
-</html>
 
 {% endblock content %}
