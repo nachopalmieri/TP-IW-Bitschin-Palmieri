@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 
+from toneup.repository import is_verified_email
+
 def HomeView(request):
     context = {}
     return render(request, 'home.html', context)
@@ -8,7 +10,9 @@ def HomeView(request):
 @login_required
 def UserProfile(request):
     
-    context = {}
+    context = {
+        'email_verified': is_verified_email(request.user.email),
+    }
     
     return render(request, 'account/profile.html', context)
 
