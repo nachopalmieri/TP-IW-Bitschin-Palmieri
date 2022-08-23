@@ -36,6 +36,10 @@ nav {
     --transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
 }
 
+*{
+    color: var(--white);
+}
+
 .user_card {
     width: 350px;
     margin-top: auto;
