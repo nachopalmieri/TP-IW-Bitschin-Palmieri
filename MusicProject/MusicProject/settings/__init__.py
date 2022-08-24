@@ -110,7 +110,7 @@ DATABASES = {
 DEFAULT_DATABASE_URL = config('DATABASE_URL', default=None)
 
 if DEFAULT_DATABASE_URL:
-    DATABASES['default'] = config_db(DEFAULT_DATABASE_URL)
+    DATABASES['default'] = config_db(default=DEFAULT_DATABASE_URL)
 
 
 # Password validation
