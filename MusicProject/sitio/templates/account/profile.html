@@ -8,6 +8,10 @@
     <h1 class="profile-account-name">{{ user.username }}</h1>
     <p>{{ user.email }} ({% if email_verified %} verificado  {% else %} pendiente verificar {% endif %})</p>
 
-    <a href="{% url 'home' %}" class="btn btn-outline-success me-2">{% trans "See my Feed" %}</a> 
+    <a href="{% url 'home' %}" class="btn btn-outline-success me-2">{% trans "See my Feed" %}</a>
+
+    {% if user.is_superuser %}
+        <a href="{% url 'admin:index' %}" class="btn btn-outline-success me-2">{% trans "Administration" %}</a>
+    {% endif %}
 <div>
 {% endblock %}
