@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 
-from toneup.repository import is_verified_email
+from tuneup.repository import is_verified_email
 
 def HomeView(request):
     context = {}

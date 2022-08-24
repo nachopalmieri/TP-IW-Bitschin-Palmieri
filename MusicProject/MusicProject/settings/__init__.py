@@ -40,7 +40,7 @@ ALLOWED_HOSTS = config(
 # Application definition
 
 INSTALLED_APPS = [
-    'toneup.apps.ToneupConfig', 
+    'tuneup.apps.TuneupConfig', 
     'sitio.apps.SitioConfig',
     'django.contrib.admin',
     'django.contrib.auth',
