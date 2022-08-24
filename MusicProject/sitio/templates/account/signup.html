@@ -17,6 +17,9 @@
           <div class="d-flex justify-content-center form_container">
             <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
                 {% csrf_token %}
+                {% for hidden in form.hidden_fields %}
+                  {{ hidden }}
+                {% endfor %}
                 <div class="input-group mb-2">
                   <div class="input-group-append">
                     <span class="input-group-text"

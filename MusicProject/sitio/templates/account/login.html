@@ -20,7 +20,12 @@
           <div class="d-flex justify-content-center form_container">
             
             <form class="login" method="POST" action="{% url 'account_login' %}">
+
               {% csrf_token %}
+              
+              {% for hidden in form.hidden_fields %}
+                {{ hidden }}
+              {% endfor %}
 
               <div class="input-group mb-3">
                 <div class="input-group-append">
@@ -78,6 +83,11 @@
                   {% endif %}
                 </ul>
               </div>
+
+              <p>
+                <label for="id_remember">Remember Me:</label>
+                <input type="checkbox" name="remember" id="id_remember">
+              </p>
 
               <!-- Restablecer contraseña -->
               <div class="d-flex links">
