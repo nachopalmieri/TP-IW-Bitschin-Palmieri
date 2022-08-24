@@ -1,1 +1,1 @@
-web: gunicorn MusicProject.wsgi
+web: cd ./MusicProject/ && gunicorn MusicProject.wsgi
