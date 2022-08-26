@@ -4,4 +4,4 @@ import django_heroku
 
 # Define heroku specific settings
 
-django_heroku.settings(locals())
+django_heroku.settings(locals(), logging=False)
