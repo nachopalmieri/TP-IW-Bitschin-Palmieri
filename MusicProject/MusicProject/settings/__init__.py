@@ -156,7 +156,8 @@ AUTHENTICATION_BACKENDS = (
     'allauth.account.auth_backends.AuthenticationBackend',
 )
 
-SITE_ID = 1
+SITE_ID = config('SITE_ID', 1)
+
 LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = 'account_login'
 ACCOUNT_LOGOUT_ON_GET = True
