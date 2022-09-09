@@ -153,7 +153,7 @@ STATIC_ROOT = BASE_DIR / 'static_files'
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
-    'allauth.account.auth_backends.AuthenticationBackend',
+    'sitio.auth.backends.SiteAuthBackend',
 )
 
 SITE_ID = config('SITE_ID', 1)
@@ -179,6 +179,8 @@ ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_EMAIL_REQUIRED = True
 SOCIALACCOUNT_QUERY_EMAIL = True
 
+AUTH_USER_MODEL = 'tuneup.models.BaseUser'
+
 # Loggers
 LOGGING = {
     'version': 1,
@@ -200,6 +202,9 @@ LOGGING = {
         },
     },
 }
+
+AUDIO_FILES_FOLDER = 'music_hits/'
+AUDIO_COVERS_FOLDER = 'music_hits/covers/'
 
 try:
     from .local_settings import *
