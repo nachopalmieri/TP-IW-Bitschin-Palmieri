@@ -11,7 +11,7 @@ def HomeView(request):
 def UserProfile(request):
     
     context = {
-        'email_verified': is_verified_email(request.user.email),
+        'email_verified': request.user.is_verified,
     }
     
     return render(request, 'account/profile.html', context)
