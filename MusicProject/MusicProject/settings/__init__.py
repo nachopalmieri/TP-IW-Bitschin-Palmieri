@@ -156,7 +156,7 @@ AUTHENTICATION_BACKENDS = (
     'sitio.auth.backends.SiteAuthBackend',
 )
 
-SITE_ID = config('SITE_ID', 1)
+SITE_ID = config('SITE_ID', 1, cast=int)
 
 LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = 'account_login'
