@@ -40,8 +40,8 @@ ALLOWED_HOSTS = config(
 # Application definition
 
 INSTALLED_APPS = [
-    'tuneup.apps.TuneupConfig', 
-    'sitio.apps.SitioConfig',
+    'tuneup', # common backend for all apps 
+    'sitio',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -179,7 +179,7 @@ ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_EMAIL_REQUIRED = True
 SOCIALACCOUNT_QUERY_EMAIL = True
 
-AUTH_USER_MODEL = 'tuneup.models.BaseUser'
+AUTH_USER_MODEL = 'tuneup.BaseUser'
 
 # Loggers
 LOGGING = {

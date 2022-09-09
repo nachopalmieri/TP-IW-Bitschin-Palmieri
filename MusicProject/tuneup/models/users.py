@@ -2,8 +2,8 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import (
-    User as DjangoUser,
-    UserManager as DjangoUserManager
+    AbstractUser,
+    UserManager
 )
 
 from allauth.account.models import EmailAddress
@@ -43,7 +43,7 @@ def get_user_from_base(base_user_instance):
             return user
 
 
-class StandardUserManager(DjangoUserManager):
+class StandardUserManager(UserManager):
     """ Manager class for general user management features. """
     
     def _create_user(self, username, email, password, **extra_fields):
@@ -54,15 +54,12 @@ class StandardUserManager(DjangoUserManager):
                     ._create_user(username, email, password, **extra_fields))
 
 
-class BaseUser(DjangoUser, FeedHitsMixin):
+class BaseUser(AbstractUser, FeedHitMixin):
     """ Base user class with common fields and features for all users types. """
     
     objects = StandardUserManager()
     
     state = models.TextField(choices=USER_STATES, default=USER_STATE_ACTIVE)
-    
-    class Meta(DjangoUser.Meta):
-        default_manager = StandardUserManager()
     
     def assign_default_permissions(self, fields: dict):
         """ Set permissions and fields related before saving. """
@@ -84,11 +81,6 @@ class BaseUser(DjangoUser, FeedHitsMixin):
 class AdminUser(BaseUser):
     """ Users from staff related to our administration. """
     
-    objects = StandardUserManager()
-    
-    class Meta(BaseUser.Meta):
-        default_manager = StandardUserManager()
-    
     def assign_default_permissions(self, fields: dict):
         
         self.is_staff = True
@@ -100,11 +92,6 @@ class AdminUser(BaseUser):
 
 class StandardUser(BaseUser, PublishHitMixin):
     """ Users with access to common apps features and standard usage. """
-    
-    objects = StandardUserManager()
-    
-    class Meta(BaseUser.Meta):
-        default_manager = StandardUserManager()
     
     def assign_default_permissions(self, fields: dict): 
         
