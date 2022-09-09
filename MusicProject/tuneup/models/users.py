@@ -67,7 +67,6 @@ class BaseUser(AbstractUser, FeedHitMixin):
     
     def assign_default_permissions(self):
         """ Set permissions and fields related before saving. """
-        raise NotImplementedError
     
     @property
     def is_verified(self):
