@@ -65,6 +65,10 @@ class BaseUser(AbstractUser, FeedHitMixin):
     
     state = models.TextField(choices=USER_STATES, default=USER_STATE_ACTIVE)
     
+    class Meta:
+        verbose_name = _("User")
+        verbose_name_plural = _("All Users")
+    
     def assign_default_permissions(self):
         """ Set permissions and fields related before saving. """
     
@@ -84,6 +88,10 @@ class BaseUser(AbstractUser, FeedHitMixin):
 class AdminUser(BaseUser):
     """ Users from staff related to our administration. """
     
+    class Meta(BaseUser.Meta):
+        verbose_name = _("Admin User")
+        verbose_name_plural = _("Admin Users")
+    
     def assign_default_permissions(self):
         self.is_staff = True
         self.is_superuser = True
@@ -91,6 +99,10 @@ class AdminUser(BaseUser):
 
 class StandardUser(BaseUser, PublishHitMixin):
     """ Users with access to common apps features and standard usage. """
+    
+    class Meta(BaseUser.Meta):
+        verbose_name = _("Standard User")
+        verbose_name_plural = _("Standard Users")
     
     def assign_default_permissions(self):
         self.is_staff = False
