@@ -19,6 +19,7 @@
                 <a href="{% url 'profile' %}" class="btn btn-outline-success me-2">{% trans "My Profile" %}</a> 
                 <a href="{% url 'account_logout' %}" class="btn btn-outline-danger me-2">{% trans "Sign Out" %}</a> 
               {% else %}
+                <a href="{% url 'profile' %}" class="btn btn-outline-success me-2">{% trans "My Profile" %}</a> 
                 <a href="{% url 'account_login' %}" class="btn btn-outline-success me-2">{% trans "Sign In" %}</a>
                 <a href="{% url 'account_signup' %}" class="btn btn-outline-success me-2">{% trans "Sign Up" %}</a>
               {% endif %}
