@@ -50,8 +50,12 @@ class StandardUserManager(UserManager):
         
         is_superuser = extra_fields.get('is_superuser', False)
         
-        return (user_factory(is_superuser=is_superuser).objects
+        if not self.model in (AdminUser, StandardUser):
+        
+            return (user_factory(is_superuser=is_superuser).objects
                     ._create_user(username, email, password, **extra_fields))
+        
+        return super()._create_user(username, email, password, **extra_fields)
 
 
 class BaseUser(AbstractUser, FeedHitMixin):
@@ -61,7 +65,7 @@ class BaseUser(AbstractUser, FeedHitMixin):
     
     state = models.TextField(choices=USER_STATES, default=USER_STATE_ACTIVE)
     
-    def assign_default_permissions(self, fields: dict):
+    def assign_default_permissions(self):
         """ Set permissions and fields related before saving. """
         raise NotImplementedError
     
@@ -73,7 +77,7 @@ class BaseUser(AbstractUser, FeedHitMixin):
         
         self.is_active = self.state is USER_STATE_ACTIVE
         
-        self.assign_default_permissions(kwargs)
+        self.assign_default_permissions()
         
         super().save(*args, **kwargs)
 
@@ -81,22 +85,14 @@ class BaseUser(AbstractUser, FeedHitMixin):
 class AdminUser(BaseUser):
     """ Users from staff related to our administration. """
     
-    def assign_default_permissions(self, fields: dict):
-        
+    def assign_default_permissions(self):
         self.is_staff = True
         self.is_superuser = True
-
-        fields['is_staff'] = self.is_staff
-        fields['is_superuser'] = self.is_superuser
 
 
 class StandardUser(BaseUser, PublishHitMixin):
     """ Users with access to common apps features and standard usage. """
     
-    def assign_default_permissions(self, fields: dict): 
-        
+    def assign_default_permissions(self):
         self.is_staff = False
         self.is_superuser = False
-        
-        fields['is_staff'] = self.is_staff
-        fields['is_superuser'] = self.is_superuser
