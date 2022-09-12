@@ -5,7 +5,6 @@ import django.contrib.auth.validators
 from django.db import migrations, models
 import django.db.models.deletion
 import django.utils.timezone
-import tuneup.models.mixins.publications
 import tuneup.models.users
 
 
@@ -41,7 +40,7 @@ class Migration(migrations.Migration):
                 'verbose_name_plural': 'users',
                 'abstract': False,
             },
-            bases=(models.Model, tuneup.models.mixins.publications.FeedHitMixin),
+            bases=(models.Model,),
             managers=[
                 ('objects', tuneup.models.users.StandardUserManager()),
             ],
@@ -71,7 +70,7 @@ class Migration(migrations.Migration):
                 'verbose_name_plural': 'users',
                 'abstract': False,
             },
-            bases=('tuneup.baseuser', tuneup.models.mixins.publications.PublishHitMixin),
+            bases=('tuneup.baseuser',),
             managers=[
                 ('objects', tuneup.models.users.StandardUserManager()),
             ],

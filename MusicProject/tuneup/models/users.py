@@ -6,20 +6,19 @@ from django.contrib.auth.models import (
     UserManager
 )
 
-from allauth.account.models import EmailAddress
-
-from tuneup.repository import is_verified_email
-from tuneup.models.mixins.publications import PublishHitMixin, FeedHitMixin
-
 
 USER_STATE_ACTIVE = 'ACTIVE'
+USER_STATE_ACTIVE_UNVERIFIED = 'ACTIVE_UNVERIFIED'
 USER_STATE_SUSPENDED = 'SUSPENDED'
 USER_STATE_BLOQUED = 'BLOQUED'
+USER_STATE_DELETED = 'DELETED'
 
 USER_STATES = (
     (USER_STATE_ACTIVE, _('Active')),
+    (USER_STATE_ACTIVE_UNVERIFIED, _('Active (Unverified)')),
     (USER_STATE_SUSPENDED, _('Suspended')),
-    (USER_STATE_BLOQUED, _('Bloqued'))
+    (USER_STATE_BLOQUED, _('Bloqued')),
+    (USER_STATE_DELETED, _('Deleted'))
 )
 
 
@@ -31,18 +30,6 @@ def user_factory(is_superuser=False):
     return StandardUser
 
 
-def get_user_from_base(base_user_instance):
-    user_refs = ['admin_user', 'standard_user']
-    
-    for ref in user_refs:
-        
-        user = getattr(base_user_instance, ref, None)
-        
-        if user:
-            
-            return user
-
-
 class StandardUserManager(UserManager):
     """ Manager class for general user management features. """
     
@@ -50,7 +37,7 @@ class StandardUserManager(UserManager):
         
         is_superuser = extra_fields.get('is_superuser', False)
         
-        if not self.model in (AdminUser, StandardUser):
+        if self.model is BaseUser:
         
             return (user_factory(is_superuser=is_superuser).objects
                     ._create_user(username, email, password, **extra_fields))
@@ -58,27 +45,32 @@ class StandardUserManager(UserManager):
         return super()._create_user(username, email, password, **extra_fields)
 
 
-class BaseUser(AbstractUser, FeedHitMixin):
+class BaseUser(AbstractUser):
     """ Base user class with common fields and features for all users types. """
     
     objects = StandardUserManager()
     
-    state = models.TextField(choices=USER_STATES, default=USER_STATE_ACTIVE)
+    state = models.TextField(
+        choices=USER_STATES,
+        default=USER_STATE_ACTIVE_UNVERIFIED
+    )
     
     class Meta:
         verbose_name = _("User")
-        verbose_name_plural = _("All Users")
+        verbose_name_plural = _("All Users") 
     
     def assign_default_permissions(self):
-        """ Set permissions and fields related before saving. """
+        """ Set permissions and related fields for user. """
+        self.is_staff = False
+        self.is_superuser = False
     
     @property
     def is_verified(self):
-        return is_verified_email(EmailAddress, self.email)
+        return self.state == USER_STATE_ACTIVE
     
     def save(self, *args, **kwargs):
         
-        self.is_active = self.state is USER_STATE_ACTIVE
+        self.is_active = self.state is not USER_STATE_DELETED
         
         self.assign_default_permissions()
         
@@ -97,13 +89,9 @@ class AdminUser(BaseUser):
         self.is_superuser = True
 
 
-class StandardUser(BaseUser, PublishHitMixin):
+class StandardUser(BaseUser):
     """ Users with access to common apps features and standard usage. """
     
     class Meta(BaseUser.Meta):
         verbose_name = _("Standard User")
         verbose_name_plural = _("Standard Users")
-    
-    def assign_default_permissions(self):
-        self.is_staff = False
-        self.is_superuser = False

@@ -6,7 +6,7 @@
 <div class="profile">
 
     <h1 class="profile-account-name">{{ user.username }}</h1>
-    <p>{{ user.email }} ({% if email_verified %} verificado  {% else %} pendiente verificar {% endif %})</p>
+    <p>{{ user.email }} ({% if user.is_verified %} verificado  {% else %} pendiente verificar {% endif %})</p>
 
     <a href="{% url 'home' %}" class="btn btn-outline-success me-2">{% trans "See my Feed" %}</a>
 

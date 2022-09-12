@@ -20,9 +20,10 @@ from django.urls import path, include
 from django.conf.urls.static import static
 
 urlpatterns = [
-    path('admin/', admin.site.urls), 
+    path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
-    path('', include('sitio.urls')), 
+    path('', include('sitio.urls')),
+    path('api/', include('rest_framework.urls'), name='api'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 handler404 = 'sitio.views.view_404'

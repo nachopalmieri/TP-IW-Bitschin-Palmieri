@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 
-from tuneup.repository import is_verified_email
 
 def HomeView(request):
     context = {}
@@ -9,12 +8,7 @@ def HomeView(request):
 
 @login_required
 def UserProfile(request):
-    
-    context = {
-        'email_verified': request.user.is_verified,
-    }
-    
-    return render(request, 'account/profile.html', context)
+    return render(request, 'account/profile.html')
 
 def view_404(request,exception=None):
     return redirect('home')

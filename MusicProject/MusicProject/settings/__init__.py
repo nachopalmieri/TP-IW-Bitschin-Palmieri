@@ -40,6 +40,7 @@ ALLOWED_HOSTS = config(
 # Application definition
 
 INSTALLED_APPS = [
+    'api',
     'tuneup', # common backend for all apps 
     'sitio',
     'django.contrib.admin',
@@ -50,7 +51,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'fontawesomefree',
     'crispy_forms',
-    'django.contrib.sites',
+    'django.contrib.sites', 
+    'rest_framework',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -153,8 +155,10 @@ STATIC_ROOT = BASE_DIR / 'static_files'
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
-    'sitio.auth.backends.SiteAuthBackend',
+    'MusicProject.auth.AuthBackend',
 )
+
+ADAPTER = 'MusicProject.auth.AccountAdapter'
 
 SITE_ID = config('SITE_ID', 1, cast=int)
 
