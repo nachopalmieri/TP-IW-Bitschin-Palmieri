@@ -62,11 +62,12 @@ class BaseUser(AbstractUser):
     def assign_default_permissions(self):
         """ Set permissions and related fields for user. """
         self.is_staff = False
-        self.is_superuser = False
+        self.is_superuser = False 
     
-    @property
-    def is_verified(self):
-        return self.state == USER_STATE_ACTIVE
+    def activate(self):
+        """ Makes an user active. """
+        self.state = USER_STATE_ACTIVE
+        self.save()
     
     def save(self, *args, **kwargs):
         

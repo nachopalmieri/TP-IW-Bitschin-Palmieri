@@ -1,5 +1,4 @@
 
-
 def cast(model_instance):
     """ Casts model instance to last class in the inheritance hierarchy. """
     
@@ -10,7 +9,7 @@ def cast(model_instance):
         
         label = model._meta.label_lower.split('.')[-1]
         
-        instance = getattr(model, label, None)
+        instance = getattr(model_instance, label, None)
         
         if instance is not None:
             break

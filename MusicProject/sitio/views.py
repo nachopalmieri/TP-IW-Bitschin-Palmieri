@@ -10,5 +10,5 @@ def HomeView(request):
 def UserProfile(request):
     return render(request, 'account/profile.html')
 
-def view_404(request,exception=None):
+def view_404(request, exception=None):
     return redirect('home')

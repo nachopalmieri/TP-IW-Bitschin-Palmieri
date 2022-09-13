@@ -74,8 +74,8 @@ MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware', 
+    'MusicProject.auth.middleware.AuthMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
@@ -155,15 +155,17 @@ STATIC_ROOT = BASE_DIR / 'static_files'
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
-    'MusicProject.auth.AuthBackend',
+    'MusicProject.auth.backends.AuthBackend',
 )
 
-ADAPTER = 'MusicProject.auth.AccountAdapter'
+ACCOUNT_ADAPTER = 'MusicProject.auth.adapters.AccountAdapter'
+SOCIALACCOUNT_ADAPTER = 'MusicProject.auth.adapters.SocialAccountAdapter'
 
 SITE_ID = config('SITE_ID', 1, cast=int)
 
 LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = 'account_login'
+ACCOUNT_SIGNUP_REDIRECT_URL = 'account_login'
 ACCOUNT_LOGOUT_ON_GET = True
 
 # Default primary key field type
