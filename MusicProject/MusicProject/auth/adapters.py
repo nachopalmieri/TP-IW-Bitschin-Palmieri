@@ -6,13 +6,18 @@ from allauth.account.adapter import DefaultAccountAdapter
 from allauth.socialaccount.adapter import DefaultSocialAccountAdapter
 
 from tuneup.models import StandardUser
-from tuneup.services import get_user_authorization_errors
+from tuneup.services import get_user_authorization_errors, create_user
+
 
 class AccountAdapter(DefaultAccountAdapter):
     """ Custom account adapter to configure authentication. """
 
     def new_user(self, request):
         return StandardUser()
+    
+    def save_user(self, request, user, form, commit=True):
+        user = super().save_user(request, user, form, commit=False)
+        create_user(user)
     
     def confirm_email(self, request, email_address):
         super().confirm_email(request, email_address)

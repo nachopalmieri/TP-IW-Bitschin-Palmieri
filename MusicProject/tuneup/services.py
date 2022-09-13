@@ -3,14 +3,26 @@ from django.dispatch import Signal
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
-from tuneup.models import (
+from tuneup.models.users import (
+    # User States
+    USER_STATE_ACTIVE,
     USER_STATE_ACTIVE_UNVERIFIED,
     USER_STATE_SUSPENDED,
-    USER_STATE_BLOQUED
+    USER_STATE_BLOQUED,
 )
 
 
 on_new_hit_published = Signal()
+
+
+def create_user(user):
+    """ Creates a new user for platform backend. """
+    
+    if user.is_superuser:
+        # Admin users must be created as verified.
+        user.state = USER_STATE_ACTIVE
+    
+    user.save()
 
 
 def publish_new_hit(music_hit):

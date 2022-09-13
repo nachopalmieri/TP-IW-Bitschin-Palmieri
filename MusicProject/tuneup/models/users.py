@@ -3,7 +3,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import (
     AbstractUser,
-    UserManager
+    UserManager as DefaultManager
 )
 from django.core.exceptions import ValidationError
 
@@ -31,17 +31,20 @@ def user_factory(is_superuser=False):
     return StandardUser
 
 
-class StandardUserManager(UserManager):
-    """ Manager class for general user management features. """
+class UserManager(DefaultManager):
     
-    def _create_user(self, username, email, password, **extra_fields):
-        
-        is_superuser = extra_fields.get('is_superuser', False)
+    def _create_user(self, username, email, password, **extra_fields):    
         
         if self.model is BaseUser:
         
-            return (user_factory(is_superuser=is_superuser).objects
-                    ._create_user(username, email, password, **extra_fields))
+            is_superuser = extra_fields.get('is_superuser')
+            
+            if is_superuser:
+                extra_fields.setdefault('state', USER_STATE_ACTIVE)
+            
+            model = user_factory(is_superuser=is_superuser)
+            
+            return model.objects._create_user(username, email, password, **extra_fields)
         
         return super()._create_user(username, email, password, **extra_fields)
 
@@ -49,7 +52,7 @@ class StandardUserManager(UserManager):
 class BaseUser(AbstractUser):
     """ Base user class with common fields and features for all users types. """
     
-    objects = StandardUserManager()
+    objects = UserManager()
     
     state = models.TextField(
         choices=USER_STATES,
@@ -100,7 +103,7 @@ class AdminUser(BaseUser):
     
     def assign_default_permissions(self):
         self.is_staff = True
-        self.is_superuser = True
+        self.is_superuser = True 
 
 
 class StandardUser(BaseUser):

@@ -42,7 +42,7 @@ class Migration(migrations.Migration):
             },
             bases=(models.Model,),
             managers=[
-                ('objects', tuneup.models.users.StandardUserManager()),
+                ('objects', tuneup.models.users.UserManager()),
             ],
         ),
         migrations.CreateModel(
@@ -57,7 +57,7 @@ class Migration(migrations.Migration):
             },
             bases=('tuneup.baseuser',),
             managers=[
-                ('objects', tuneup.models.users.StandardUserManager()),
+                ('objects', tuneup.models.users.UserManager()),
             ],
         ),
         migrations.CreateModel(
@@ -72,7 +72,7 @@ class Migration(migrations.Migration):
             },
             bases=('tuneup.baseuser',),
             managers=[
-                ('objects', tuneup.models.users.StandardUserManager()),
+                ('objects', tuneup.models.users.UserManager()),
             ],
         ),
         migrations.CreateModel(
