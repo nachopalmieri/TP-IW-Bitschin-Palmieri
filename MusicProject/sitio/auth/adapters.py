@@ -16,8 +16,12 @@ class AccountAdapter(DefaultAccountAdapter):
     
     def confirm_email(self, request, email_address):
         super().confirm_email(request, email_address)
-        email_address.user.activate()
-    
+        
+        try:
+            email_address.user.activate()
+        except ValidationError:
+            pass
+        
     def authenticate(self, request, **credentials):
         
         user = super().authenticate(request, **credentials)

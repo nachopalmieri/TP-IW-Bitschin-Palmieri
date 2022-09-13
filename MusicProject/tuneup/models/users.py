@@ -5,6 +5,7 @@ from django.contrib.auth.models import (
     AbstractUser,
     UserManager
 )
+from django.core.exceptions import ValidationError
 
 
 USER_STATE_ACTIVE = 'ACTIVE'
@@ -55,6 +56,12 @@ class BaseUser(AbstractUser):
         default=USER_STATE_ACTIVE_UNVERIFIED
     )
     
+    # States from where the user can be active again.
+    activable_states = (
+        USER_STATE_ACTIVE_UNVERIFIED,
+        USER_STATE_SUSPENDED
+    )
+    
     class Meta:
         verbose_name = _("User")
         verbose_name_plural = _("All Users") 
@@ -66,6 +73,12 @@ class BaseUser(AbstractUser):
     
     def activate(self):
         """ Makes an user active. """
+        
+        if self.state not in self.activable_states:
+            raise ValidationError(
+                f"User can't be re-actvated from state '{ self.state }'"
+            )
+        
         self.state = USER_STATE_ACTIVE
         self.save()
     

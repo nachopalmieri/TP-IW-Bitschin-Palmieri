@@ -75,7 +75,7 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware', 
-    'MusicProject.auth.middleware.AuthMiddleware',
+    'sitio.auth.middleware.AuthMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
@@ -155,11 +155,11 @@ STATIC_ROOT = BASE_DIR / 'static_files'
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
-    'MusicProject.auth.backends.AuthBackend',
+    'sitio.auth.backends.AuthBackend',
 )
 
-ACCOUNT_ADAPTER = 'MusicProject.auth.adapters.AccountAdapter'
-SOCIALACCOUNT_ADAPTER = 'MusicProject.auth.adapters.SocialAccountAdapter'
+ACCOUNT_ADAPTER = 'sitio.auth.adapters.AccountAdapter'
+SOCIALACCOUNT_ADAPTER = 'sitio.auth.adapters.SocialAccountAdapter'
 
 SITE_ID = config('SITE_ID', 1, cast=int)
 
