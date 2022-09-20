@@ -1,0 +1,39 @@
+
+.audio-player {
+    margin-top: 15px;
+    margin-bottom: 15px;
+    width: 350px;
+    height: 500px;
+}
+
+.audio-player .img-cover {
+    width: 250px;
+    height: 250px;
+    border: 1px solid black;
+    margin: auto;
+}
+
+.audio-player .img-cover-container {
+    width: 100%;
+    height: 100%;
+    padding: auto;
+}
+
+.audio-player .label-cover {
+    width: 100%;
+}
+
+.audio-player .controls {
+    width: 100%;
+    height: 50px;
+    float: bottom;
+    background-color: transparent;
+    border: 1px solid black;
+}
+
+.audio-player .controls .btn {
+    float: left;
+    height: 25px;
+    margin-left: 15px;
+    margin-top: auto;
+}

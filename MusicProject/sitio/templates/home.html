@@ -6,7 +6,17 @@
 {% block content %}
 
 <div class="mt-2">
-    <h1>Home<h1>
-    <p>Here you'll see your feed...</p>
+    <h1>Last Stories <a class="btn btn-success" href="{% url 'publish-hit' %}">Publish</a></h1>
+
+    {% for publication in publications %}
+
+        <div class="mt-2">
+            <div
+                class="mt-2 audio-player-container"
+                fetch-tracks=""
+            ></div>
+        </div>
+
+    {% endfor %}
 </div>
 {% endblock content %}

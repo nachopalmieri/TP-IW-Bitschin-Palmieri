@@ -33,6 +33,8 @@
 
     <link rel="stylesheet" href="{% static 'css/base.css' %}" />
 
+    <link rel="stylesheet" href="{% static 'audio-player/audio-player.css' %}" />
+
   </head>
   <body>
 
@@ -64,6 +66,17 @@
     {% block extra_body %}
     {% endblock %}
     
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <script type="text/javascript">
+
+      const client = axios.create({
+        baseURL: '/api',
+        timeout: 5000
+      });
+
+    </script>
+    
     <!-- Font awesome js -->
     <script src="{% static 'fontawesomefree/js/all.min.js' %}"></script>
 
@@ -73,5 +86,8 @@
         $(this).alert('close');
       });
     </script>
+
+    {% include 'audio_player.html' %}
+
   </body>
 </html>

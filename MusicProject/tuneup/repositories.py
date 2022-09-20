@@ -3,14 +3,9 @@
 from tuneup.models.publications import MusicHit
 
 
-def get_hits_feed(user=None):
+def get_hits(ordering=[], **filters):
     """ Gets hit stories. """
     
-    filters = {}
-    
-    if user is not None:
-        filters['user'] = user
-    
     return (MusicHit.objects
-                .filter(is_active=True, **filters)
-                .order_by('-publish_date'))
+                .filter(**filters)
+                .order_by(*ordering))

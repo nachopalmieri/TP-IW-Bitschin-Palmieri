@@ -10,6 +10,8 @@ from tuneup.models.users import (
     USER_STATE_SUSPENDED,
     USER_STATE_BLOQUED,
 )
+from tuneup.models.publications import PUB_STATE_ACTIVE
+from tuneup.repositories import get_hits
 
 
 on_new_hit_published = Signal()
@@ -30,11 +32,23 @@ def publish_new_hit(music_hit):
 
     if music_hit.publish_date:
         raise ValueError("This hit is already published.")
+    
+    if not music_hit.audio.is_valid:
+        raise ValueError(f"Invalid or unsupported audio file '{ music_hit.audio.extension }'")
 
     music_hit.publish_date = timezone.now()
     music_hit.save()
 
     on_new_hit_published.send(music_hit=music_hit)
+
+
+def get_feed_for_user(user):
+    """ Gets user personal feed. """
+    
+    return get_hits(
+        state=PUB_STATE_ACTIVE,
+        ordering=['-publish_date']
+    )
 
 
 def get_user_authorization_errors(user):

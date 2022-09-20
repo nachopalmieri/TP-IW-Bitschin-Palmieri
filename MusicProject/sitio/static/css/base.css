@@ -40,6 +40,10 @@ nav {
     color: var(--white);
 }
 
+.custom-form input[type="text"] {
+    color: var(--dark-navy);
+}
+
 .user_card {
     width: 350px;
     margin-top: auto;

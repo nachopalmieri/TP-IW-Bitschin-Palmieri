@@ -1,0 +1,60 @@
+{% load static %}
+
+<template id="audio-player-template">
+    <div class="audio-player">
+        
+        <div class='img-cover-container'>
+            <img class='img-cover'></img>
+            <p class='label-cover'></p>
+        </div>
+        
+        <div class='controls'>
+            <button class='btn btn-outline-success btn-prev'>
+                <i class="control-icon"></i>
+            </button>
+            <button class='btn btn-outline-success btn-main'>
+                <i class="control-icon"></i>
+            </button>
+            <button class='btn btn-outline-success btn-next'>
+                <i class="control-icon"></i>
+            </button>
+        </div>
+
+    </div>
+</template>
+
+<script type="module" src="{% static 'audio-player/audio-player.js' %}"></script>
+
+<script type="text/javascript">
+
+    const loadAudioPlayer = (tracksApi) => {
+        
+        let tracks = client.get(tracksApi) || [];
+
+        if (tracks && typeof tracks === 'object') {
+            if (!tracks.hasOwnProperty('length')) {
+                tracks = [tracks];
+            }
+        }
+
+        return new AudioPlayer(tracks=tracks);
+
+    };
+
+    window.addEventListener('load', (event) => {
+
+        const audioPlayers = document.querySelectorAll('.audio-player-container');
+
+        for (const container in audioPlayers) {
+
+            const tracksApi = container.getAttribute('fetch-tracks');
+
+            const audioPlayer = loadAudioPlayer(tracksApi);
+
+            audioPlayer.create(container);
+
+        }
+
+    });
+
+</script>

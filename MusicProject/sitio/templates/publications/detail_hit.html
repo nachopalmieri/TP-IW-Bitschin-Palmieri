@@ -1,0 +1,14 @@
+
+{% extends 'base.html' %}
+
+{% load i18n %}
+{% load static %}
+
+{% block content %}
+
+    <div
+        class="mt-2 audio-player-container"
+        fetch-tracks="{% url 'api:publication-detail' pk=publication.pk %}"
+    ></div>
+
+{% endblock content %}
