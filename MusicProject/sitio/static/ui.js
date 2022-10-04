@@ -34,29 +34,38 @@ class UIElement {
 
         if (fragment) {
 
-            this.component = fragment.content.cloneNode(true);
+            const node = fragment.content.cloneNode(true);
 
             container.addEventListener('DOMNodeRemoved', this.onremove);
 
-            for(const childContainer in Object.keys(this.childs)) {
+            container.appendChild(node);
+
+            this.component = container.lastElementChild;
+
+            for(const childContainerKey in Object.keys(this.childs)) {
+
+                const childContainer = this.childs[childContainerKey];
+
                 for (const child in childContainer) {
-                    if (childContainer === 'root') {
+                    if (childContainerKey === 'root') {
                         child.create(container=this.component);
                     } else {
                         child.create(container=childContainer);
                     }
                 }
             }
+            
+            this.initialize(this.component);
 
             this.render();
-
-            container.appendChild(this.component);
 
         }
 
         return this.component;
 
     }
+
+    initialize(component) {}
 
     render() {}
 
@@ -75,16 +84,35 @@ class UIElement {
 
 }
 
-const addClasses = (element, classList) => {
-    for (const cls in classList) {
-        element.classList.add(cls);
+class Throttler {
+
+    constructor(callback, time) {
+        this.throttleTimer = false;
     }
+
+    throttle(callback, time) {
+        if (this.throttleTimer) return;
+
+        this.throttleTimer = true;
+
+        setTimeout(() => {
+            callback();
+            this.throttleTimer = false;
+        }, time);
+    }
+
+}
+
+const addClasses = (element, classList) => {
+    classList.forEach(cls => {
+        element.classList.add(cls);
+    })
 }
 
 const removeClasses = (element, classList) => {
-    for (const cls in classList) {
+    classList.forEach(cls => {
         element.classList.remove(cls);
-    }
+    })
 }
 
-export { UIElement, addClasses, removeClasses };
+export { UIElement, Throttler, addClasses, removeClasses };

@@ -3,20 +3,100 @@
 {% load i18n %}
 {% load static %}
 
+{% block styles %}
+    <style type="text/css">
+        body {
+            overflow-y:hidden;
+        }
+    </style>
+{% endblock styles %}
+
 {% block content %}
 
-<div class="mt-2">
-    <h1>Last Stories <a class="btn btn-success" href="{% url 'publish-hit' %}">Publish</a></h1>
+    <div class="mt-2">
 
-    {% for publication in publications %}
+        <h1>Last Stories <a class="btn btn-success" href="{% url 'publish-hit' %}">Publish</a></h1>
 
-        <div class="mt-2">
-            <div
-                class="mt-2 audio-player-container"
-                fetch-tracks=""
-            ></div>
+        <div id="publications">
         </div>
 
-    {% endfor %}
-</div>
+    </div>
+    
 {% endblock content %}
+
+{% block scripts %}
+
+    <script type="module">
+        
+        import { client } from "{% static 'client.js' %}";
+        import { Throttler } from "{% static 'ui.js' %}";
+        import { AudioPlayer, Track } from "{% static 'audio-player/audio-player.js' %}";
+
+        const publications = { page: 1, loading: false };
+
+        window.addEventListener('load', (e) => {
+
+            const pubContainer = document.querySelector('#publications');
+
+            const loadPublications = () => {
+                if (publications.loading) {
+                    return;
+                }
+
+                publications.loading = true;
+
+                console.log("loading: ", publications.page);
+
+                return client.getPublications(publications.page)
+                    .then(pubs => {
+                    
+                    publications.page += pubs.length ? 1 : 0;
+
+                    pubs.forEach(pub => {
+                        
+                        const element = pubContainer.appendChild(document.createElement('div'));
+                        
+                        element.setAttribute('fetch-tracks', `/publications/${pub.id}`);
+                        element.setAttribute('class', "mt-5 audio-player-container publication");
+                        element.setAttribute('loaded', true);
+
+                        new AudioPlayer([
+                            new Track({
+                                title: pub.title,
+                                coverSrc: pub.cover,
+                                audioSrc: pub.audio,
+                            })
+                        ]).create(element);
+
+                    });
+
+                    publications.loading = false;
+
+                    return pubs;
+
+                })
+                .catch(err => {
+                    publications.loading = false;
+                });
+            };
+
+            // First load
+            loadPublications().then(() => {
+                pubContainer.addEventListener('scroll', () => {
+                    new Throttler().throttle(() => {
+                        const max = pubContainer.scrollHeight - pubContainer.clientHeight;
+                        const delta = pubContainer.scrollTop / max;
+                        const scroll = Math.round((delta + Number.EPSILON) * 100) / 100;
+    
+                        if (scroll > .75) {
+                            loadPublications();
+                        }
+                    });
+                });
+            });
+
+        });
+        
+    </script>
+
+{% endblock scripts %}

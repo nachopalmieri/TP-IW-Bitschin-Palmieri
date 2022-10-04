@@ -9,6 +9,16 @@ html {
     background: #112240 !important;
 }
 
+div,
+a,
+p,
+section, 
+img, 
+i,
+svg {
+    display: block;
+}
+
 nav {
     background-color: #0a192f;
 }
@@ -134,4 +144,11 @@ nav {
 }
 a{
     color: var(--green);
+}
+
+#publications {
+    height: 80vh;
+    margin-top: 50px;
+    padding-bottom: 70px;
+    overflow-y: scroll;
 }

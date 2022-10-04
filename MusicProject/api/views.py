@@ -1,18 +1,17 @@
-from django.shortcuts import get_object_or_404
 from rest_framework import viewsets
-from rest_framework.response import Response
+from rest_framework.pagination import PageNumberPagination
 
 from tuneup.models.publications import MusicHit, PUB_STATE_ACTIVE
 
-from .serializers import *
+from .serializers import MusicHitSerializer
 
 
-class PublicationsViewSet(viewsets.ViewSet):
+class PublicationPagination(PageNumberPagination):
+    page_size = 2
+    page_size_query_param = 'page_size'
+    max_page_size = 1000
 
-    def retrieve(self, request, pk=None):
-        
-        queryset = MusicHit.objects.all(state=PUB_STATE_ACTIVE)
-        pub = get_object_or_404(queryset, pk=pk)
-        serializer = MusicHitSerializer(pub)
-        
-        return Response(serializer.data)
+class PublicationsViewSet(viewsets.ModelViewSet):
+    serializer_class = MusicHitSerializer
+    pagination_class = PublicationPagination
+    queryset = MusicHit.objects.filter(state=PUB_STATE_ACTIVE)

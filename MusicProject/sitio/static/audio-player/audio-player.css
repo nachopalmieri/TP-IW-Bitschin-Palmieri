@@ -1,39 +1,62 @@
 
-.audio-player {
-    margin-top: 15px;
-    margin-bottom: 15px;
-    width: 350px;
-    height: 500px;
-}
-
 .audio-player .img-cover {
-    width: 250px;
-    height: 250px;
-    border: 1px solid black;
-    margin: auto;
+    width: 100%;
 }
 
-.audio-player .img-cover-container {
+.audio-player .img-cover-container .cover-controls {
+    width: 250px;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+}
+
+.audio-player .img-cover-container .cover-controls img {
     width: 100%;
     height: 100%;
-    padding: auto;
 }
 
 .audio-player .label-cover {
     width: 100%;
+    text-align: center;
+    margin-top: 12px;
+    font-weight: 350;
 }
 
 .audio-player .controls {
     width: 100%;
-    height: 50px;
-    float: bottom;
     background-color: transparent;
     border: 1px solid black;
+    z-index: 999;
+    position: absolute;
+    bottom: 0;
+    padding-top: 20px;
+    padding-bottom: 10px;
+}
+
+.audio-player .controls:hover {
+    background: rgb(0,0,0);
+    background: linear-gradient(180deg, rgba(0,0,0,0.1) 5%, rgba(0,0,0,0.5) 65%, rgba(0,0,0,1) 100%);
 }
 
 .audio-player .controls .btn {
-    float: left;
-    height: 25px;
-    margin-left: 15px;
-    margin-top: auto;
+    margin: auto;
+    display: inline-block;
+    vertical-align: middle;
+    text-align: center;
+    border: none;
+    min-width: 36px;
+    min-height: 36px;
+}
+
+.audio-player .controls .btn:hover {
+    background-color: rgba(100, 250, 215, 0.6);
+}
+
+.audio-player .controls .btn i,
+.audio-player .controls .btn svg {
+    margin-left: 1px;
+}
+
+.audio-player .controls .btn.btn-main {
+    border-radius: 50%;
 }

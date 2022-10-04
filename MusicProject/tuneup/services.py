@@ -39,7 +39,7 @@ def publish_new_hit(music_hit):
     music_hit.publish_date = timezone.now()
     music_hit.save()
 
-    on_new_hit_published.send(music_hit=music_hit)
+    on_new_hit_published.send(sender=publish_new_hit, music_hit=music_hit)
 
 
 def get_feed_for_user(user):

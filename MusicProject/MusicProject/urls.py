@@ -23,7 +23,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
     path('', include('sitio.urls'), name = 'sitio'),
-    path('api/', include('rest_framework.urls'), name='api'),
+    path('api/', include('rest_framework.urls')),
+    path('api/', include('api.urls', namespace='api')),
 ]   + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) \
     + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

@@ -4,6 +4,8 @@ from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
 
+app_name = 'api'
+
 router.register(r'publications', PublicationsViewSet, basename='publication')
 
 # URLS de la api
